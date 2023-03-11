@@ -2,7 +2,7 @@ name: Nightly
 
 on:
   push:
-    branches: [ main ]
+    branches: [ mu2 ]
     paths:
     - 'src/**'
     - 'scripts/**'
@@ -59,13 +59,13 @@ jobs:
 
     - name: Download Client with OpenAsar
       run: |
-        wget "https://discord.com/api/download/canary?platform=linux&format=tar.gz" -O discord.tar.gz
+        wget "https://discord.com/api/download/development?platform=linux&format=tar.gz" -O discord.tar.gz
         tar xf discord.tar.gz
-        cp app.asar DiscordCanary/resources/app.asar
+        cp app.asar DiscordDevelopment/resources/app.asar
 
     - name: Check if Discord will startup
       run: |
-        coproc { xvfb-run -e /dev/stdout ./DiscordCanary/DiscordCanary --enable-logging; }
+        coproc { xvfb-run -e /dev/stdout ./DiscordDevelopment/DiscordDevelopment --enable-logging; }
         grep -m1 "Finished discord_rpc" <&${COPROC[0]}
         sleep 1
         [[ $COPROC_PID ]] && kill $COPROC_PID
@@ -120,7 +120,7 @@ jobs:
     - name: Check if Discord will startup
       run: |
         cd discord/app-1.0.0
-        ./DiscordCanary.exe | grep -m1 "ABRA"
+        ./DiscordDevelopment.exe | grep -m1 "ABRA"
       timeout-minutes: 3
       shell: bash
 
@@ -179,13 +179,13 @@ jobs:
 
   #   - name: Download Client with OpenAsar
   #     run: |
-  #       wget "https://discord.com/api/download/canary?platform=linux&format=tar.gz" -O discord.tar.gz
+  #       wget "https://discord.com/api/download/Development?platform=linux&format=tar.gz" -O discord.tar.gz
   #       tar xf discord.tar.gz
-  #       cp app.asar DiscordCanary/resources/app.asar
+  #       cp app.asar DiscordDevelopment/resources/app.asar
 
   #   - name: Run Client
   #     run: |
-  #       xvfb-run -e /dev/stdout ./DiscordCanary/DiscordCanary --enable-logging 2>&1
+  #       xvfb-run -e /dev/stdout ./DiscordDevelopment/DiscordDevelopment --enable-logging 2>&1
   #     timeout-minutes: 5
   
   # debug-win:
@@ -228,6 +228,6 @@ jobs:
   #   - name: Run Client
   #     run: |
   #       cd discord/app-1.0.0
-  #       ./DiscordCanary.exe --enable-logging
+  #       ./DiscordDevelopment.exe --enable-logging
   #     timeout-minutes: 5
   #     shell: bash
